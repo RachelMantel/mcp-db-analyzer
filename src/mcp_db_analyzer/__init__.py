@@ -1,1 +1,1 @@
-"""MCP DB Inspector package."""
+"""MCP DB Analyzer package."""

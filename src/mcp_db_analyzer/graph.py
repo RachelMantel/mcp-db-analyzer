@@ -59,7 +59,7 @@ def build_dot(tables: List[Dict[str, Any]], fks: List[Dict[str, Any]]) -> str:
 
 
 
-def render_mermaid_er(tables: List[Dict[str, Any]], fks: List[Dict[str, Any]]) -> Dict[str, Any]:
+def build_mermaid_er(tables: List[Dict[str, Any]], fks: List[Dict[str, Any]]) -> Dict[str, Any]:
     """
     Build a Mermaid ER diagram from schema data (tables + fks), with strong dedupe.
 
@@ -69,10 +69,12 @@ def render_mermaid_er(tables: List[Dict[str, Any]], fks: List[Dict[str, Any]]) -
     try:
         # ---- collect & dedupe table names ----
         table_names: set[str] = set()
+        table_map: Dict[str, Dict[str, Any]] = {}
         for t in tables:
             name = (t.get("table") or "").strip()
             if name:
                 table_names.add(name)
+                table_map[name] = t
 
         # ---- relationships dedupe ----
         # key includes cols mapping to avoid dupes while still allowing multiple distinct FKs
@@ -83,6 +85,14 @@ def render_mermaid_er(tables: List[Dict[str, Any]], fks: List[Dict[str, Any]]) -
         # ---- entities ----
         for t in sorted(table_names):
             lines.append(f"  {_m_id(t)} {{")
+            cols = (table_map.get(t) or {}).get("columns", []) or []
+            for col in cols:
+                col_name_raw = (col.get("name") or "").strip()
+                if not col_name_raw:
+                    continue
+                col_name = _m_attr(col_name_raw)
+                col_type = _m_type(col.get("type"))
+                lines.append(f"    {col_type} {col_name}")
             lines.append("  }")
 
         # ---- relations ----
@@ -125,3 +135,23 @@ def _m_id(name: str) -> str:
 
 def _m_label(text: str) -> str:
     return re.sub(r"[\r\n:]", " ", text).strip()
+
+
+def _m_attr(name: str) -> str:
+    s = name.replace(".", "_")
+    s = re.sub(r"[^A-Za-z0-9_]", "_", s)
+    if not s:
+        return "_"
+    if not (s[0].isalpha() or s[0] == "_"):
+        s = "_" + s
+    return s
+
+
+def _m_type(type_text: Any) -> str:
+    s = str(type_text or "").strip()
+    s = re.sub(r"\s+", " ", s)
+    if not s:
+        return "UNKNOWN"
+    if " " not in s:
+        return s
+    return s.split(" ", 1)[0]
