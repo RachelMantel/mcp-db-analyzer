@@ -1,0 +1,8 @@
+mcp
+sqlalchemy
+# Graph rendering (requires Graphviz installed)
+graphviz
+# DB drivers (install what you need)
+# PostgreSQL: psycopg (or psycopg2-binary)
+# MySQL: pymysql (or mysqlclient)
+# SQL Server: pyodbc (requires ODBC driver installed)

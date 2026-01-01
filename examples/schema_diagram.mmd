@@ -1,0 +1,140 @@
+erDiagram
+  years ||--o{ budgets : has
+  years ||--o{ programs : has
+  budgets ||--o{ programs : funds
+  budgets ||--o{ expenses : funds
+  programs ||--o{ expenses : includes
+  expenses ||--o{ expense_categories : tagged
+  categories ||--o{ expense_categories : tags
+  programs ||--o{ program_categories : tagged
+  categories ||--o{ program_categories : tags
+
+  budgets {
+    uuid id PK
+    text airtable_id
+    timestamp_tz created_time
+    timestamp_tz updated_time
+    text funding_source_id
+    text name
+    numeric budget
+    text display_year
+    text expenses_2
+    uuid year_id FK
+  }
+
+  categories {
+    uuid id PK
+    text airtable_id
+    timestamp_tz created_time
+    timestamp_tz updated_time
+    text category_id
+    text name
+    text project_names
+  }
+
+  expected_expenses {
+    uuid id PK
+    text airtable_id
+    timestamp_tz created_time
+    timestamp_tz updated_time
+    text name
+    numeric amount
+  }
+
+  expense_categories {
+    uuid expense_id PK, FK
+    uuid category_id PK, FK
+  }
+
+  expenses {
+    uuid id PK
+    text airtable_id
+    timestamp_tz created_time
+    timestamp_tz updated_time
+    text expense_id
+    text program_name
+    text supplier_name
+    timestamp_tz date
+    text invoice_description
+    numeric amount
+    text geffen_details
+    jsonb invoice_file
+    text business_number
+    jsonb bank_details_file
+    text bank_name
+    text bank_branch
+    text bank_account
+    text invoice_type
+    text supplier_email
+    text status
+    text user_id
+    text priority
+    text year
+    text beneficiary
+    text funding_source_id
+    boolean fake_data
+    jsonb receipt_file
+    timestamp_tz updated
+    text expense_type
+    text id_number
+    numeric rate
+    text is_gross
+    numeric employer_cost
+    text month
+    numeric quantity
+    text rejection_reason
+    uuid program_id FK
+    uuid budget_id FK
+  }
+
+  program_categories {
+    uuid program_id PK, FK
+    uuid category_id PK, FK
+  }
+
+  programs {
+    uuid id PK
+    text airtable_id
+    timestamp_tz created_time
+    timestamp_tz updated_time
+    text program_id
+    text name
+    numeric budget
+    numeric extra_budget
+    text grade
+    jsonb user_ids
+    text name_from_categories
+    timestamp_tz date
+    text display_year
+    numeric income
+    text income_details
+    text department
+    uuid budget_id FK
+    uuid year_id FK
+  }
+
+  settings {
+    uuid id PK
+    text airtable_id
+    timestamp_tz created_time
+    timestamp_tz updated_time
+    text setting_id
+    text key
+    text value
+  }
+
+  sync_state {
+    text table_name PK
+    timestamp_tz last_synced_at
+  }
+
+  years {
+    uuid id PK
+    text airtable_id
+    timestamp_tz created_time
+    timestamp_tz updated_time
+    text year_id
+    text value
+    text settings
+    text budgets_copy
+  }

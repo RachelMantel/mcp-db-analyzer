@@ -1,0 +1,7 @@
+model = "gpt-5.2-codex"
+model_reasoning_effort = "medium"
+
+[mcp_servers.mcp-db-analyzer]
+command = "python"
+args = ["C:/path/to/mcp-python-server/server.py"]
+cwd = "C:/path/to/mcp-python-server"
