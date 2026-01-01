@@ -1,18 +1,18 @@
-Usage
+# Usage
 
-Quickstart
+## Quickstart
 1) python -m venv .venv
 2) .venv\Scripts\activate
 3) pip install -r requirements.txt
 4) python server.py
 
-Connection URLs
+## Connection URLs
 - sqlite:///test.db
 - postgresql+psycopg://user:pass@localhost:5432/mydb
 - mysql+pymysql://user:pass@localhost:3306/mydb
 - mssql+pyodbc://@HOST/DB?driver=ODBC+Driver+17+for+SQL+Server&trusted_connection=yes&TrustServerCertificate=yes
 
-MCP Inspector Quick Test
+## MCP Inspector quick test
 1) python server.py
 2) npx @modelcontextprotocol/inspector
 3) Add server:
@@ -22,7 +22,7 @@ MCP Inspector Quick Test
    - cwd: this repo path
 4) Call inspect_schema with connection_url "sqlite:///test.db"
 
-Example Inputs
+## Example inputs
 inspect_schema:
 ```json
 {
@@ -46,6 +46,6 @@ schema_graph_dot:
 }
 ```
 
-Common Issues
+## Common issues
 - Missing driver error: install the correct SQLAlchemy driver for your DB.
 - Slow stats: row counts are gated for non-SQLite unless schema or include_tables is set.
